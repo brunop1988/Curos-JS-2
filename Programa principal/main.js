@@ -147,7 +147,7 @@ function toString(trabajador) {
 
 function toString(producto) {
 
-    return "Codigo: " + producto.codigoProducto + "\n" + "Nombre: " + producto.nombreProducto + "\n" + "Tipo: " + producto.tipoProducto + "\n" + "Importado: " + producto.importado + "\n" + "Precio costo: " + producto.precioCompra + "\n" + "Precio venta: " + producto.precioVenta + "\n\n"
+    return "Codigo: " + producto.codigoProducto + "\n" + "Nombre: " + producto.nombreProducto + "\n" + "Tipo: " + producto.tipoProducto + "\n" + "Importado: " + producto.importado + "\n" + "Precio costo: " + producto.precioCompra + "\n" + "Precio venta: " + producto.precioVenta + "\n" + "Stock: " + producto.stock + "\n\n"
 }
 
 function error() {
@@ -156,7 +156,7 @@ function error() {
 
 //SE CARGAN LOS DATOS AQUÍ PARA QUE NO SE AGREGUEN SIEMPRE QUE SALTA EL MENÚ
 //OBJETO PRODUCTO
-agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, 175))
+agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, 175, +1))
 
 
 
@@ -194,42 +194,56 @@ while (opcion != 0) {
 
                 }
             }
-
             let boleta = prompt("Hacer factura?")
-
-
             precioVentaFinal = calculoImpuesto(precioVenta, boleta) + precioVenta
 
-            console.log(precioVentaFinal)
+            console.log("Precio venta al público: " + precioVentaFinal)
+
+            //FALTA DESCONTAR DEL STOCK
+
 
             break
 
         case 2:
 
+
+            let flag2 = 1
+
             let codigo = 0
             codigo = prompt("Ingrese codigo producto")
+            while (flag2 != 0) {
+                for (const producto of arrayProductos) {
+                    if (producto.codigoProducto == parseInt(codigo)) {
+                        alert("Ya existe el código para este artículo: " + toString(producto))
 
-            for (const producto of arrayProductos) {
-                if (producto.codigoProducto === parseInt(codigo)) {
-                    console.log("Ya existe el código para este artículo: " + toString(producto) + "\n\n Desea sumarlo al stock?")
-                    producto.stock += 1
-                } else {
-                    let monto = prompt("Ingrese el precio de compra del producto")
-                    let importado = prompt("Es un producto importado?")
-                    let marca = prompt("Ingrese la marca")
-                    let tipo = prompt("Ingrese el tipo de producto")
+                        let op = prompt("Desea sumarlo al stock?")
+                        if (op === "S" || op === "s") {
+                            producto.stock += 1
+                            flag2 = 0
+                            break
 
-                    alert("El precio es: " + totalPrecioConImpuesto(parseInt(monto), importado))
-                    arrayProductos.push(codigo, marca, tipo, importado, monto, totalPrecioConImpuesto(parseInt(monto), importado))
+                        } else {
+                            flag2 = 0
+                            break
+                        }
+                    } else {
+                        let monto = prompt("Ingrese el precio de compra del producto")
+                        let importado = prompt("Es un producto importado?")
+                        let marca = prompt("Ingrese la marca")
+                        let tipo = prompt("Ingrese el tipo de producto")
+                        let stock = +1
+                        agregarProducto(new Producto(parseInt(codigo), marca, tipo, importado, parseInt(monto), totalPrecioConImpuesto(parseInt(monto), importado), stock))
+                        flag2 = 0
+                        break
+
+                    }
                 }
-
             }
 
 
 
 
 
-            break
 
         case 3:
 
@@ -275,7 +289,7 @@ while (opcion != 0) {
 
 
 
-            arrayTrabajadores.push(new Persona(nombre, apellido, parseInt(documento), edad, direccion, telefono, categoria))
+            agregarTrabajador(new Persona(nombre, apellido, parseInt(documento), edad, direccion, telefono, categoria))
 
             break
 
