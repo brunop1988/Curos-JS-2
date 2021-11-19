@@ -212,7 +212,7 @@ while (opcion != 0) {
             let codigo = 0
             codigo = prompt("Ingrese codigo producto")
             while (flag2 != 0) {
-                for (const producto of arrayProductos) {
+                for (let producto of arrayProductos) {
                     if (producto.codigoProducto == parseInt(codigo)) {
                         alert("Ya existe el código para este artículo: " + toString(producto))
 
