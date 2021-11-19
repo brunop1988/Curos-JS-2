@@ -1,1 +1,1 @@
-# codigos varios
+# Para el curso de JavaScript
