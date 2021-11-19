@@ -208,37 +208,43 @@ while (opcion != 0) {
 
 
             let flag2 = 1
-
+            let obj = undefined
             let codigo = 0
             codigo = prompt("Ingrese codigo producto")
             while (flag2 != 0) {
-                for (let producto of arrayProductos) {
-                    if (producto.codigoProducto == parseInt(codigo)) {
-                        alert("Ya existe el código para este artículo: " + toString(producto))
+                for (const producto of arrayProductos) {
+                    if (producto.codigoProducto === parseInt(codigo)) {
+                        obj = producto
+                        flag2 = 0
+                    }
 
-                        let op = prompt("Desea sumarlo al stock?")
-                        if (op === "S" || op === "s") {
-                            producto.stock += 1
-                            flag2 = 0
-                            break
+                }
+                if (obj != undefined) {
+                    alert("Ya existe el código para este artículo: " + toString(obj))
 
-                        } else {
-                            flag2 = 0
-                            break
-                        }
-                    } else {
-                        let monto = prompt("Ingrese el precio de compra del producto")
-                        let importado = prompt("Es un producto importado?")
-                        let marca = prompt("Ingrese la marca")
-                        let tipo = prompt("Ingrese el tipo de producto")
-                        let stock = +1
-                        agregarProducto(new Producto(parseInt(codigo), marca, tipo, importado, parseInt(monto), totalPrecioConImpuesto(parseInt(monto), importado), stock))
+                    let op = prompt("Desea sumarlo al stock?")
+                    if (op === "S" || op === "s") {
+                        obj.stock += 1
                         flag2 = 0
                         break
 
+                    } else {
+                        flag2 = 0
+                        break
                     }
+                } else {
+                    let monto = prompt("Ingrese el precio de compra del producto")
+                    let importado = prompt("Es un producto importado?")
+                    let marca = prompt("Ingrese la marca")
+                    let tipo = prompt("Ingrese el tipo de producto")
+                    let stock = +1
+                    agregarProducto(new Producto(parseInt(codigo), marca, tipo, importado, parseInt(monto), totalPrecioConImpuesto(parseInt(monto), importado), stock))
+                    flag2 = 0
+                    break
+
                 }
             }
+
 
 
 
