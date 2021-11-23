@@ -194,7 +194,7 @@ while (opcion != 0) {
 
                 }
             }
-            let boleta = prompt("Hacer factura?")
+            let boleta = prompt("Hacer factura? S(s) ó N(n)")
             precioVentaFinal = calculoImpuesto(precioVenta, boleta) + precioVenta
 
             console.log("Precio venta al público: " + precioVentaFinal)
@@ -234,7 +234,7 @@ while (opcion != 0) {
                     }
                 } else {
                     let monto = prompt("Ingrese el precio de compra del producto")
-                    let importado = prompt("Es un producto importado?")
+                    let importado = prompt("Es un producto importado? S(s) ó N(n)")
                     let marca = prompt("Ingrese la marca")
                     let tipo = prompt("Ingrese el tipo de producto")
                     let stock = +1
@@ -253,11 +253,17 @@ while (opcion != 0) {
 
         case 3:
 
-            let result = ""
+            let result = document.getElementById("productos")
             for (const producto of arrayProductos) {
-                result += toString(producto)
+                let li = document.createElement("li")
+                li.innerHTML = `<h3> id: ${producto.codigoProducto} </h3>
+                <p> Nombre: ${producto.nombreProducto} </p>
+                <p> Tipo: ${producto.tipoProducto}</p>
+                <p> Precio: ${producto.precioVenta} </p>`
+                result.appendChild(li)
             }
-            console.log(result)
+
+
             break
 
 
