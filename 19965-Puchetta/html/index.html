@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+
+<body>
+    <!--NOMBRE DEL USUARIO EN LA "SESION"-->
+    <header>
+        <div id="contenedorUsuarioActual">
+
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+
+            <!--LA IDEA ES QUE EL USUARIO COMUN SOLO VEA UNA LISTA DE PRODUCTOS DISPONIBLES PARA COMPRAR-->
+            <div class="col-4 mx-auto">
+                <form class="row g-3" id="formIngreso">
+                    <div class="col-auto">
+                        <label for="" class="visually-hidden" placeholder="Usuario">Usuario</label>
+                        <input type="text" class="form-control" placeholder="nombre de usuario" name="usuario">
+                    </div>
+                    <div class="col-auto">
+                        <label for="" class="visually-hidden">Password</label>
+                        <input type="password" class="form-control" autocomplete="off" placeholder="Password" name="contraseña">
+                    </div>
+                    <div class="col-auto">
+                        <button style="margin-left: 35px;" type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../js/bootstrap.js">
+    </script>
+    <script src="../scripts/ingreso.js">
+    </script>
+</body>
+
+</html>

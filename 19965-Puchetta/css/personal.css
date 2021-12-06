@@ -1,0 +1,34 @@
+#ingresarPersona {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+label {
+    margin-top: 10px;
+}
+
+.accordion {
+    width: 500px;
+    margin-left: 400px;
+    background-color: red;
+}
+
+.accordion-item {
+    margin-top: 40px;
+}
+
+#espacioUsuario {
+    color: whitesmoke;
+    font-size: 15px;
+}
+
+body {
+    background-image: url(../img/wallpapertip_human-resources-wallpaper_169282.jpg);
+    background-size: cover;
+}
+
+#linkAdminProductos {
+    margin-left: 1000px;
+    color: white;
+}
