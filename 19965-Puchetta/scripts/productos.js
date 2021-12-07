@@ -280,6 +280,7 @@ function listaParaVentas() {
 
         documento.appendChild(elemento)
 
+        //CODIGO PARA AGREGAR AL CARRITO
         let carrito = []
         $(`#${idElemento}`).on(`click`, () => {
             if (producto.stock > 0) {
