@@ -85,9 +85,9 @@ function error() {
 
 //SE CARGAN LOS DATOS AQUÍ PARA QUE NO SE AGREGUEN SIEMPRE QUE SALTA EL MENÚ
 //OBJETO PRODUCTO
-agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 0))
-agregarProducto(new Producto(1002, "Kingston", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 0))
-agregarProducto(new Producto(1003, "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 0))
+agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 1))
+agregarProducto(new Producto(1002, "Kingston", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 1))
+agregarProducto(new Producto(1003, "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
 
 //COMIENZA LA PARTE INTERACTIVA CON EL USUARIO
 
@@ -164,7 +164,7 @@ function factura() {
 }
 
 
-
+//INGRESA A LA LISTA DE PRODUCTOS DE LOS ADMINISTRADORES
 function ingresarProducto() {
     const formulario = document.getElementById("ingresarProducto")
     formulario.addEventListener('submit', e => {
@@ -239,7 +239,7 @@ function ingresarProducto() {
 
 }
 
-
+//REFRESCA LA LISTA EN PRODUCTOS.HTML PARA LOS ADMINISTRADORES
 function generarLista() {
 
     let result = document.getElementById("listaProductos")
@@ -256,33 +256,45 @@ function generarLista() {
     }
 }
 
+//LISTA DE PRODUCTOS DISPONIBLES PARA LOS CLIENTES. ES LO QUE SE DESPLIEGA EN VENTAS.HTML
 function listaParaVentas() {
     let documento = document.getElementById("listaVentas")
     documento.innerHTML = " "
+    let idElemento
     let elemento = document.createElement("li")
-    let idElemento = 1000
     for (const producto of arrayProductos) {
-        elemento.innerHTML += `<div>
-        <p id="id_${idElemento} "class="parrafoID"> id:${idElemento++}</p>
+        idElemento = producto.codigoProducto
+        elemento.innerHTML += `<div id="${producto.codigoProducto}" class="parrafoID">
+        <p>  id:${producto.codigoProducto}</p>
         <p> Nombre: ${producto.nombreProducto} </p>
         <p> Tipo: ${producto.tipoProducto}</p>
         <p> Precio: ${producto.precioVenta} </p>
         <p> Stock: ${producto.stock} </p>
-        <form id="${idElemento}">
+        <form>
         <label type="text" name="nombre">${producto.tipoProducto} ${producto.nombreProducto} </label>
-        <button id="${idElemento}" class="comprar"  type="submit">Agregar a la compra</button>
+        <button id="${idElemento}">Agregar a la compra</button>
         </form >
         <hr>
 
         </div>`
+
         documento.appendChild(elemento)
 
-        //CODIGO MUY EXPERIMENTAL 
+        let carrito = []
+        $(`#${idElemento}`).on(`click`, () => {
+            if (producto.stock > 0) {
+                producto.stock--;
+                carrito.push(producto.nombreProducto)
+                let string = JSON.stringify(carrito)
+                localStorage.setItem("Producto", string)
+                listaParaVentas()
+            } else {
+                $(`#advertencia`).append(`<span>No hay stock</span>`)
+            }
 
-        agregarCompra()
-
-
+        })
     }
+
 }
 
 function obtenerUltimoCodigo() {
@@ -291,22 +303,4 @@ function obtenerUltimoCodigo() {
         ultimo = producto.codigoProducto
     }
     return ultimo
-}
-
-//
-function agregarCompra() {
-    $(`.comprar`).click((e) => {
-        let id = e.target.idElemento
-        let producto = arrayProductos.find(item => item == id)
-        if (producto.stock > 0) {
-            producto.stock--;
-            let string = JSON.stringify(producto)
-            localStorage.setItem("Producto", string)
-
-        } else {
-            $(`#id_${idElemento}`).appendChild(`<span>No hay stock</span>`)
-        }
-
-
-    })
 }
