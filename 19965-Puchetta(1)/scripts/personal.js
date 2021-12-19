@@ -17,8 +17,20 @@ function agregarTrabajador(trabajador) {
     generarLista()
 }
 
-//Listado de personas
+//OBJETOS CREADOS EN datosPersonal.json
 
+const datosPersonas = "http://127.0.0.1:5500/html/datosPersonal.json"
+$.get(datosPersonas, (respuesta, estado) => {
+
+    for (const trabajador of respuesta) {
+        if (estado == "success") {
+            agregarTrabajador(trabajador)
+        }
+    }
+})
+
+
+//Listado de personas
 
 function generarLista() {
     let result = document.getElementById("personal")
@@ -110,9 +122,6 @@ function toString(trabajador) {
 //OBJETOS TRABAJADOR
 
 
-agregarTrabajador(new Persona("Bruno", "Puchetta", 43589726, 33, "JJ Severino 1414", 091689780, 4))
-agregarTrabajador(new Persona("Carolina", "Rodríguez", 47693464, 26, "Andromeda 10345", 092444556, 5))
-agregarTrabajador(new Persona("María", "Paz", 36365034, 58, "Jose Livi 8919", 092667890, 3))
 
 
 

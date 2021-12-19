@@ -1,0 +1,28 @@
+[{
+        "nombre": "Bruno",
+        "apellido": "Puchetta",
+        "documento": 43589726,
+        "edad": 33,
+        "direccion": "JJ Severino 1414",
+        "telefono": 91689780,
+        "categoria": 4
+    },
+    {
+        "nombre": "Carolina",
+        "apellido": "Rodriguez",
+        "documento": 47693464,
+        "edad": 26,
+        "direccion": "JJ Severino 1414",
+        "telefono": 92445775,
+        "categoria": 4
+    },
+    {
+        "nombre": "Maria",
+        "apellido": "Paz",
+        "documento": 12345678,
+        "edad": 23,
+        "direccion": "JJ Severino 1414",
+        "telefono": 333222444,
+        "categoria": 4
+    }
+]
