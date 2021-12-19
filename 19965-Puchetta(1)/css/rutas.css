@@ -1,0 +1,35 @@
+/*CON MAS TIEMPO APLICARE SASS*/
+
+#div1 {
+    background-color: black;
+    margin-top: 150px;
+}
+
+#div2 {
+    background-color: black;
+    margin-top: 150px;
+    height: min-content;
+}
+
+h1 {
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#img1 {
+    height: 325px;
+}
+
+#button1 {
+    position: absolute;
+    display: inline-block;
+    top: 36%;
+    left: 24%;
+}
+
+#button2 {
+    position: absolute;
+    display: inline-block;
+    top: 35%;
+    left: 67%;
+}

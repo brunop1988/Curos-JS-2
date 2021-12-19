@@ -47,7 +47,7 @@
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <div id="ingresarProducto">
-                        <form action="">
+                        <form id="limpiarFormulario" action="">
 
                             <label for="">Nombre</label>
                             <input type="text" name="nombre">
@@ -58,13 +58,18 @@
                             <label for="">Precio</label>
                             <input type="number" name="precioCompra">
 
-                            <button style="margin-top: 40px;" type="submit">Enviar información</button>
+                            <button class="formularioAgregar" style="margin-top: 40px;" type="submit">Enviar información</button>
 
                         </form>
-                    </div>
-                    <div id="advertencia">
+                        <div class="confirmacion">
+
+                        </div>
+                        <div id="advertencia">
+
+                        </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -80,14 +85,32 @@
                 </div>
                 <div id="control"></div>
             </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+                <button id="acordionBuscar" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Buscar producto 
+                    </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form id="buscarProducto">
+                        <label for="">Tipo de producto</label>
+                        <input type="text" name="nombre">
+                        <button type="submit">Enviar información</button>
+                    </form>
+                    <div id="encontrados"></div>
+                </div>
+            </div>
 
         </div>
+    </div>
 
+    <script src="../libs/jquery-3.6.0.min.js"></script>
 
-        <script src="../libs/jquery-3.6.0.min.js"></script>
-        <script src="../scripts/stockProductos.js"></script>
-        <script src="../scripts/productos.js"></script>
-        <script src="../js/bootstrap.js"></script>
+    <script src="../scripts/productos.js"></script>
+    <script src="../js/bootstrap.js"></script>
+
 </body>
 
 </html>

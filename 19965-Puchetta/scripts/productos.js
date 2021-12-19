@@ -1,24 +1,10 @@
-class Producto {
-    constructor(codigoProducto, nombreProducto, tipoProducto, importado, precioCompra, precioVenta, stock) {
-        this.codigoProducto = codigoProducto
-        this.nombreProducto = nombreProducto
-        this.tipoProducto = tipoProducto
-        this.importado = importado
-        this.precioCompra = precioCompra
-        this.precioVenta = totalPrecioConImpuesto(precioCompra, importado) + precioCompra
 
-        this.stock = stock + 1
-    }
-}
 //MÉTODOS CLASE PRODUCTO
 
-const arrayProductos = []
 
 
-function agregarProducto(producto) {
-    arrayProductos.push(producto)
-    segunUsuario()
-}
+
+
 
 function segunUsuario() {
     if (localStorage.getItem("TipoUsuario") === "Comun") {
@@ -32,42 +18,7 @@ function segunUsuario() {
     }
 }
 
-function gananciaEmpresa(monto) {
-    let ganancia = monto * .40
-    return ganancia
-}
-//CALCULO DE PRECIO FINAL DE UN PRODUCTO, CON LA CONDICION SI SE HACE BOLETA O NO Y SI ES IMPORTADO O NO
 
-
-function esImportado(monto, importado) {
-    let impuesto = 0
-    if (importado === "S" || importado === "s") {
-        impuesto = monto * .06
-        return impuesto
-    } else if (importado === "N" || importado === "n") {
-        return 0
-    } else {
-        error()
-
-    }
-}
-
-function calculoImpuesto(monto, boleta) {
-    if (boleta === "S" || boleta === "s") {
-        let impuesto = monto * .21
-        return impuesto
-    } else if (boleta === "N" || boleta === "n") {
-        return 0
-    } else {
-
-        error()
-    }
-}
-
-function totalPrecioConImpuesto(monto, importado) {
-    let precioFinal = gananciaEmpresa(monto) + esImportado(monto, importado) + monto
-    return precioFinal
-}
 
 
 
@@ -83,11 +34,7 @@ function error() {
 
 
 
-//SE CARGAN LOS DATOS AQUÍ PARA QUE NO SE AGREGUEN SIEMPRE QUE SALTA EL MENÚ
-//OBJETO PRODUCTO
-agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 1))
-agregarProducto(new Producto(1002, "Kingston", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 1))
-agregarProducto(new Producto(1003, "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
+
 
 //COMIENZA LA PARTE INTERACTIVA CON EL USUARIO
 
@@ -257,51 +204,3 @@ function generarLista() {
 }
 
 //LISTA DE PRODUCTOS DISPONIBLES PARA LOS CLIENTES. ES LO QUE SE DESPLIEGA EN VENTAS.HTML
-function listaParaVentas() {
-    let documento = document.getElementById("listaVentas")
-    documento.innerHTML = " "
-    let idElemento
-    let elemento = document.createElement("li")
-    for (const producto of arrayProductos) {
-        idElemento = producto.codigoProducto
-        elemento.innerHTML += `<div id="${producto.codigoProducto}" class="parrafoID">
-        <p>  id:${producto.codigoProducto}</p>
-        <p> Nombre: ${producto.nombreProducto} </p>
-        <p> Tipo: ${producto.tipoProducto}</p>
-        <p> Precio: ${producto.precioVenta} </p>
-        <p> Stock: ${producto.stock} </p>
-        <form>
-        <label type="text" name="nombre">${producto.tipoProducto} ${producto.nombreProducto} </label>
-        <button id="${idElemento}">Agregar a la compra</button>
-        </form >
-        <hr>
-
-        </div>`
-
-        documento.appendChild(elemento)
-
-        //CODIGO PARA AGREGAR AL CARRITO
-        let carrito = []
-        $(`#${idElemento}`).on(`click`, () => {
-            if (producto.stock > 0) {
-                producto.stock--;
-                carrito.push(producto.nombreProducto)
-                let string = JSON.stringify(carrito)
-                localStorage.setItem("Producto", string)
-                listaParaVentas()
-            } else {
-                $(`#advertencia`).append(`<span>No hay stock</span>`)
-            }
-
-        })
-    }
-
-}
-
-function obtenerUltimoCodigo() {
-    let ultimo = 0
-    for (const producto of arrayProductos) {
-        ultimo = producto.codigoProducto
-    }
-    return ultimo
-}

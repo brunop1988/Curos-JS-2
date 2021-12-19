@@ -1,0 +1,33 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+label {
+    margin-top: 10px;
+}
+
+.accordion {
+    width: 500px;
+    margin-left: 400px;
+    background-color: greenyellow;
+}
+
+.accordion-item {
+    margin-top: 40px;
+}
+
+#espacioUsuario {
+    font-size: 15px;
+}
+
+#linkAdminPersonal {
+    margin-left: 1000px;
+    position: fixed;
+}
+
+.parrafoID {
+    text-decoration: underline;
+    font-size: 19px;
+}
