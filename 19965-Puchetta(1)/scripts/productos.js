@@ -13,22 +13,35 @@ class Producto {
 //MÉTODOS CLASE PRODUCTO
 
 const arrayProductos = []
-let carrito = []
+const carrito = []
 
 
 
 
-cargarArrayCarrito()
+
 
 
 function agregarProducto(producto) {
     arrayProductos.push(producto)
-    segunUsuario(producto)
+    segunUsuario()
 }
 
-function cargarArrayCarrito() {
-    carrito.push(localStorage.getItem("Producto"))
+//CODIGO PARA VER EL CARRITO
+$(`#carrito`).click(() => {
+            $(`#verCarrito`).show()
 
+            $(`#verCarrito`).html(`<li>${localStorage.getItem(`Productos ${localStorage.getItem("Nombre")}`)}</li>`)
+
+            $(`#carrito`).dblclick(()=>{
+                $(`#verCarrito`).hide()
+            })
+    })
+
+
+function cargarArrayCarrito() {
+if(localStorage.getItem(`Productos ${localStorage.getItem("Nombre")}`)!=null){
+    carrito.push(localStorage.getItem(`Productos ${localStorage.getItem("Nombre")}`))
+}
 }
 
 function segunUsuario() {
@@ -79,8 +92,18 @@ function totalPrecioConImpuesto(monto, importado) {
 
 function toString(producto) {
 
-    return "Codigo: " + producto.codigoProducto + "\n" + "Nombre: " + producto.nombreProducto + "\n" + "Tipo: " + producto.tipoProducto + "\n" + "Importado: " + producto.importado + "\n" + "Precio costo: " + producto.precioCompra + "\n" + "Precio venta: " + producto.precioVenta + "\n" + "Stock: " + producto.stock + "\n\n"
+        return `
+
+            <li><strong>Nombre producto:</strong> ${producto.nombreProducto}</li>
+            
+            <li><strong>Tipo producto:</strong> ${producto.tipoProducto}</li>
+            <li><strong>Precio:</strong> ${producto.precioVenta}</li>
+            -------------------------------------------------------
+            `
+                      
+            
 }
+
 
 function error() {
     alert("Algo salió mal, reintente")
@@ -342,9 +365,9 @@ function listaParaVentas() {
             e.preventDefault()
             if (producto.stock > 0) {
                 producto.stock--;
-                carrito.push(producto)
-                let string = JSON.stringify(carrito)
-                localStorage.setItem("Producto", string)
+                carrito.push(toString(producto))
+                
+                localStorage.setItem(`Productos ${localStorage.getItem("Nombre")}`, carrito)
             } else {
                 avisarStock(idElemento)
 
@@ -385,14 +408,20 @@ function avisarStock(id) {
 //CONFIRMA SI EL PRODUCTO SE AGREGO O NO
 function confirmarAgregado(nombre, tipo) {
     if (nombre != '' || tipo != '') {
+
         $(`.formularioAgregar`).click(() => {
+            $(`.confirmacion`).html(``)
+
             $(`.confirmacion`).trigger(`append`)
         })
 
         $(`.confirmacion`).append(`<span> Producto agregado a la lista </span>`)
         mostrarAvisoOk()
+
     } else {
         $(`.formularioAgregar`).click(() => {
+            $(`.confirmacion`).html(``)
+
             $(`.confirmacion`).trigger(`append`)
         })
 
@@ -410,6 +439,7 @@ function mostrarAvisoError() {
         .fadeOut(2000)
         .fadeIn(2000)
         .slideUp(1000)
+
     $(`#advertencia`).css({
             "color": "red",
             "font-size": "20px",
@@ -428,6 +458,8 @@ function mostrarAvisoOk() {
         .fadeIn(2000)
         .slideUp(1000)
 
+
+
 }
 
 
@@ -440,6 +472,5 @@ function compararCarritoContraStock() {
         if (encontrado != undefined) {
             arrayProductos[i].stock--
         }
-        segunUsuario()
     }
 }

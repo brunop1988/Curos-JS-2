@@ -6,28 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../css/ventas.css">
+    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
-<body onload="compararCarritoContraStock()">
+<body onload="cargarArrayCarrito()">
     <!--PARA HACER UNA PAGINA PARA LOS USUARIOS COMPRADORES (USUARIO COMUN)-->
     <header>
         <div id="espacioUsuario">
 
         </div>
 
+
     </header>
     <main>
-        <div id="listaVentas">
+        <div>
+            <div class="btn-group dropend">
+                <button id="carrito1" type="button" class="btn btn-secondary">
+                Ver carrito 
+               </button>
+                <button id="carrito" type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
+                <ul id="verCarrito" class="dropdown-menu">
+                </ul>
+            </div>
 
+
+            <div id="listaVentas">
+            </div>
         </div>
         <div id="advertencia">
 
         </div>
     </main>
-    <script src="../libs/jquery-3.6.0.min.js"></script>
 
+    <script src="../libs/jquery-3.6.0.min.js"></script>
     <script src="../scripts/productos.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+
 
 </body>
 

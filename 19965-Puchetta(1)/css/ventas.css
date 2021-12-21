@@ -1,0 +1,17 @@
+#carrito {
+    margin-left: 930px;
+    position: fixed;
+}
+
+#carrito1 {
+    margin-left: 830px;
+    position: fixed;
+}
+
+#verCarrito {
+    margin-left: 970px!important;
+    margin-top: 0px!important;
+    width: max-content;
+    font-size: 15px;
+    position: absolute;
+}

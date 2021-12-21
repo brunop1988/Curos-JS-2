@@ -14,12 +14,13 @@ const arrayTrabajadores = []
 
 function agregarTrabajador(trabajador) {
     arrayTrabajadores.push(trabajador)
+
     generarLista()
 }
 
 //OBJETOS CREADOS EN datosPersonal.json
 
-const datosPersonas = "http://127.0.0.1:5500/html/datosPersonal.json"
+const datosPersonas = "http://127.0.0.1:5500/datosJSON/datosPersonal.json"
 $.get(datosPersonas, (respuesta, estado) => {
 
     for (const trabajador of respuesta) {
@@ -35,17 +36,19 @@ $.get(datosPersonas, (respuesta, estado) => {
 function generarLista() {
     let result = document.getElementById("personal")
     result.innerHTML = " "
-    let lista
+
     for (const personas of arrayTrabajadores) {
-        lista = document.createElement("li")
-        lista.innerHTML = `<p> Nombre: ${personas.nombre} </p>
-                                <p> Apellido: ${personas.apellido} </p>
-                                <p> Documento: ${personas.documento}</p>
-                                <p> Categoría: ${personas.categoria} </p>
-                                <p> Teléfono: ${personas.telefono}</p>`
+        let lista = document.createElement("li")
+
+        lista.innerHTML = `
+        <p class="parrafoID"> Documento: ${personas.documento}</p>
+        <p> Nombre: ${personas.nombre} </p>
+        <p> Apellido: ${personas.apellido} </p>
+        <p> Categoría: ${personas.categoria} </p>
+        <p> Teléfono: ${personas.telefono}</p>`
         result.appendChild(lista)
     }
-    return lista
+
 }
 //METODOS DE CLASE PERSONA
 //CALCULO DE SUELDO DE TRABAJADOR, SEGUN CATEGOR�A Y ESCALAF�N IMPOSITIVO
@@ -114,10 +117,7 @@ function calculoSueldo(categoria, aporte) {
 }
 
 
-function toString(trabajador) {
 
-    return "Nombre: " + trabajador.nombre + "\n" + "Apellido: " + trabajador.apellido + "\n" + "Documento: " + trabajador.documento + "\n" + "Categoría: " + trabajador.categoria + "\n" + "Telefono: " + trabajador.telefono + "\n\n"
-}
 
 //OBJETOS TRABAJADOR
 
@@ -177,9 +177,15 @@ formulario.addEventListener('submit', e => {
     persona.direccion = formProps.direccion
     persona.categoria = Number(formProps.categoria)
 
+
+
+    //Confirmación de persona agregada
+
     agregarTrabajador(persona)
-        //Confirmación de persona agregada
     confirmarAgregado(persona)
+
+
+
     document.getElementById('ingresarPersona').reset()
 
 
@@ -189,21 +195,19 @@ formulario.addEventListener('submit', e => {
 //Búsqueda de los datos de una persona por documento
 
 
-const formulario3 = document.getElementById("buscarPersonal")
-let persona2 = document.createElement("li")
-formulario3.addEventListener('submit', e => {
+$(`#buscarPersonal`).submit(e => {
     e.preventDefault()
     const formData3 = new FormData(e.target)
     const formProps3 = Object.fromEntries(formData3)
     let resultado = arrayTrabajadores.find(item => item.documento === Number(formProps3.documento))
     if (resultado != undefined) {
-        persona2.innerHTML = `<p> Nombre: ${resultado.nombre} </p>
+        $(`#buscarPersonal`).append(`<p> Nombre: ${resultado.nombre} </p>
                                                 <p> Apellido: ${resultado.apellido} </p>
                                                 <p> Documento: ${resultado.documento} </p>
                                                 <p> Categoría: ${resultado.categoria} </p>
                                                 <p> Teléfono: ${resultado.telefono} </p>`
 
-        formulario3.appendChild(persona2)
+        )
 
     } else {
         error()
@@ -211,12 +215,48 @@ formulario3.addEventListener('submit', e => {
 
 })
 
+//Mensaje de confirmación cuando se agrega una persona
 function confirmarAgregado(persona) {
     if (persona != undefined) {
         $(`#ingresarPersona`).click(() => {
+            $(`#confirmacion`).html(``)
+
             $(`#confirmacion`).trigger(`append`)
         })
 
         $(`#confirmacion`).append(`<span> Personal agregado </span>`)
+        mostrarAvisoOk()
+    } else {
+        $(`.formularioAgregar`).click(() => {
+            $(`#confirmacion`).html(``)
+
+            $(`.confirmacion`).trigger(`append`)
+        })
+
+        $(`#confirmacion`).append(`<span> No se agregó </span>`)
+        mostrarAvisoError()
     }
+}
+
+//Avisos segun resutlado de intento de agregar al array
+function mostrarAvisoError() {
+    $(`#confirmacion`).css({
+            "color": "red",
+            "font-size": "20px",
+        })
+        .fadeOut(2000)
+        .fadeIn(2000)
+        .slideUp(1000)
+
+}
+
+function mostrarAvisoOk() {
+    $(`#confirmacion`).css({
+            "color": "green",
+            "font-size": "20px",
+        })
+        .fadeOut(2000)
+        .fadeIn(2000)
+        .slideUp(1000)
+
 }
