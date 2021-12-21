@@ -352,7 +352,7 @@ function listaParaVentas() {
         <p> Stock: ${producto.stock} </p>
         <form>
         <label type="text" name="nombre">${producto.tipoProducto} ${producto.nombreProducto} </label>
-        <button id="${idElemento}">Agregar a la compra</button>
+        <button class="btn btn-primary" id="${idElemento}">Agregar a la compra</button>
         </form >
         <hr>
 

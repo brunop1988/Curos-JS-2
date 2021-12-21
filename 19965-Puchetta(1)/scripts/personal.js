@@ -18,7 +18,7 @@ function agregarTrabajador(trabajador) {
     generarLista()
 }
 
-//OBJETOS CREADOS EN datosPersonal.json
+//OBJETOS CREADOS EN datosPersonal.json, traídos usando AJAX
 
 const datosPersonas = "http://127.0.0.1:5500/datosJSON/datosPersonal.json"
 $.get(datosPersonas, (respuesta, estado) => {

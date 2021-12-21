@@ -1,11 +1,13 @@
 #carrito {
     margin-left: 930px;
     position: fixed;
+    background-color: red;
 }
 
 #carrito1 {
     margin-left: 830px;
     position: fixed;
+    background-color: red;
 }
 
 #verCarrito {
