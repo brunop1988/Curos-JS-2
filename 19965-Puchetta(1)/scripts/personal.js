@@ -20,7 +20,7 @@ function agregarTrabajador(trabajador) {
 
 //OBJETOS CREADOS EN datosPersonal.json, traídos usando AJAX
 
-const datosPersonas = "http://127.0.0.1:5500/datosJSON/datosPersonal.json"
+const datosPersonas = "../datosJSON/datosPersonal.json"
 $.get(datosPersonas, (respuesta, estado) => {
 
     for (const trabajador of respuesta) {
@@ -47,9 +47,14 @@ function generarLista() {
         <p> Categoría: ${personas.categoria} </p>
         <p> Teléfono: ${personas.telefono}</p>`
         result.appendChild(lista)
+            //Por si se agrega personal sin nombre o apellido
+        if (personas.nombre === '' || personas.apellido === '') {
+            result.removeChild(lista)
+        }
     }
-
 }
+
+
 //METODOS DE CLASE PERSONA
 //CALCULO DE SUELDO DE TRABAJADOR, SEGUN CATEGOR�A Y ESCALAF�N IMPOSITIVO
 function impuestoJubilatorio(sueldo) {

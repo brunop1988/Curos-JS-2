@@ -23,10 +23,24 @@ function sesionActual(usuario) {
     documento.appendChild(mensaje)
 }
 
+function registrarse() {
+    const formData2 = new FormData(e.target)
+    const formProps2 = Object.fromEntries(formData2)
+    for (const usuario of usuarios) {
+        if ((formProps2.nombreUsuario != usuario.Nombre) && (formProps2.contraseña != usuario.Contraseña) && (formProps2.tipo === "claveAdmin")) {
+            usuarios.push(nombreUsuario, contraseña, "Admin")
+        }
+
+
+    }
+}
+
 
 let link
-    //SEGUN EL TIPO DE USUARIO LOGEADO, ESTA PAGINA NOS DIRIGE A rutas.html o ventas.html
+
+//SEGUN EL TIPO DE USUARIO LOGEADO, ESTA PAGINA NOS DIRIGE A rutas.html o ventas.html
 for (const usuario of usuarios) {
+
     const formulario = document.getElementById("formIngreso")
 
     formulario.addEventListener('submit', e => {
@@ -34,19 +48,15 @@ for (const usuario of usuarios) {
 
         const formData1 = new FormData(e.target)
         const formProps1 = Object.fromEntries(formData1)
-        if ((formProps1.usuario === usuario.Nombre) && (formProps1.contraseña === usuario.Contraseña) && (usuario.Tipo === "Admin")) {
-            link = document.createElement("p")
+        if ((formProps1.usuarioNombre === usuario.Nombre) && (formProps1.contraseña === usuario.Contraseña) && (usuario.Tipo === "Admin")) {
+            window.location.replace("../html/rutas.html")
 
-            link.innerHTML = `<a href="rutas.html">A pagina principal</a>`
-            formulario.appendChild(link)
             sesionActual(usuario)
 
 
         }
-        if ((formProps1.usuario === usuario.Nombre) && (formProps1.contraseña === usuario.Contraseña) && (usuario.Tipo === "Comun")) {
-            link = document.createElement("p")
-            link.innerHTML = `<a href="ventas.html">A Lista Productos</a>`
-            formulario.appendChild(link)
+        if ((formProps1.usuarioNombre === usuario.Nombre) && (formProps1.contraseña === usuario.Contraseña) && (usuario.Tipo === "Comun")) {
+            window.location.replace("../html/ventas.html")
             sesionActual(usuario)
 
         }

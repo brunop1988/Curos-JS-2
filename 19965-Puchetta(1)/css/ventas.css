@@ -1,19 +1,58 @@
 #carrito {
-    margin-left: 930px;
-    position: fixed;
     background-color: red;
 }
 
 #carrito1 {
     margin-left: 830px;
-    position: fixed;
     background-color: red;
 }
 
 #verCarrito {
     margin-left: 970px!important;
     margin-top: 0px!important;
-    width: max-content;
+    width: fit-content;
     font-size: 15px;
-    position: absolute;
+}
+
+.tamañoImagen {
+    height: 200px;
+    width: 200px;
+}
+
+#listaVentas {
+    margin-left: 20px;
+    list-style-type: none;
+    text-align: center;
+}
+
+.parrafoID1 {
+    margin-top: 150px;
+    margin-right: 200px;
+    width: fit-content;
+}
+
+.parrafoID2 {
+    margin-top: 150px;
+    margin-left: 130px;
+}
+
+.parrafoID3 {
+    margin-top: 150px;
+    margin-left: 200px;
+    width: fit-content;
+}
+
+#listaVentas {
+    display: grid;
+    grid-template-columns: 300px 300px 500px;
+    grid-template-rows: 200px;
+    grid-template-areas: "parrafoID1" "parrafoID2" "parrafoID3";
+    margin-left: 150px;
+}
+
+.imagenCarrito {
+    height: 120px;
+    width: 120px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }

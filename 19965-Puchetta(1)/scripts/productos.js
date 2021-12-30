@@ -1,6 +1,7 @@
 class Producto {
-    constructor(codigoProducto, nombreProducto, tipoProducto, importado, precioCompra, precioVenta, stock) {
+    constructor(codigoProducto, imagen, nombreProducto, tipoProducto, importado, precioCompra, precioVenta, stock) {
         this.codigoProducto = codigoProducto
+        this.imagen = imagen
         this.nombreProducto = nombreProducto
         this.tipoProducto = tipoProducto
         this.importado = importado
@@ -14,6 +15,7 @@ class Producto {
 
 const arrayProductos = []
 const carrito = []
+
 
 
 
@@ -93,12 +95,12 @@ function totalPrecioConImpuesto(monto, importado) {
 function toString(producto) {
 
         return `
-
-            <li><strong>Nombre producto:</strong> ${producto.nombreProducto}</li>
+            <li class="listaCarrito"><img class="imagenCarrito" src="${producto.imagen}"</li>
+            <li class="listaCarrito"><strong>Nombre producto:</strong> ${producto.nombreProducto}</li>
             
-            <li><strong>Tipo producto:</strong> ${producto.tipoProducto}</li>
-            <li><strong>Precio:</strong> ${producto.precioVenta}</li>
-            -------------------------------------------------------
+            <li class="listaCarrito"><strong>Tipo producto:</strong> ${producto.tipoProducto}</li>
+            <li class="listaCarrito"><strong>Precio:</strong> ${producto.precioVenta}</li>
+            ----------------------------------------------------
             `
                       
             
@@ -114,9 +116,9 @@ function error() {
 
 //SE CARGAN LOS DATOS AQUÍ PARA QUE NO SE AGREGUEN SIEMPRE QUE SALTA EL MENÚ
 //OBJETO PRODUCTO
-agregarProducto(new Producto(1001, "Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 1))
-agregarProducto(new Producto(1002, "Kingston", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 1))
-agregarProducto(new Producto(1003, "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
+agregarProducto(new Producto(1001, "../img/pendrive.jpg","Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 1))
+agregarProducto(new Producto(1002, "../img/camara.jpg","Genius", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 1))
+agregarProducto(new Producto(1003, "../img/notebook.jpg", "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
 
 //COMIENZA LA PARTE INTERACTIVA CON EL USUARIO
 
@@ -136,7 +138,7 @@ function venderProducto() {
     formulario2.innerHTML = " "
 
     for (const producto of arrayProductos) {
-
+            let idProducto = producto.codigoProducto
 
         let mensaje = document.createElement("div")
         mensaje.innerHTML = `
@@ -149,8 +151,8 @@ function venderProducto() {
                 <p> Precio venta sin facturar: ${producto.precioVenta}</p>
                 <p> Stock: ${producto.stock} </p>
                 <label> Hacer boleta?</label>
-                <input type="text" name="boleta"> 
-                <button type="submit"> Confirmar </button>
+                <input id="${idProducto}" type="text" name="boleta"> 
+                <button class="control" type="submit"> Confirmar </button>
                 </form>
                 `
 
@@ -158,26 +160,35 @@ function venderProducto() {
 
         formulario2.appendChild(mensaje)
 
+        $(`#${idProducto}`).submit((e) => {
+            e.preventDefault()
+            if (producto.stock > 0) {
+                producto.stock--;
+             }
+             venderProducto()
+
+         })
 
     }
-
 }
+
 
 //FUNCION PARA MOSTRAR PRODUCTOS FACTURADOS
 function factura() {
     const arrayVentas = []
-    const formulario = document.getElementById("control")
+    const formulario = document.getElementsByClassName("control")
     formulario.addEventListener('submit', e => {
         e.preventDefault()
         const formData1 = new FormData(e.target)
         const formProps1 = Object.fromEntries(formData1)
+    
         let objVentas
         for (const producto of arrayProductos) {
             if (formProps1.boleta) {
                 objVentas = {
                     "Nombre: ": producto.nombreProducto,
                     "Codigo. ": producto.codigoProducto,
-                    "Facturado: ": boleta,
+                    "Facturado: ": formProps1.boleta,
                     "Precio final: ": producto.precioFinal
                 }
                 arrayVentas.push(objVentas)
@@ -243,6 +254,7 @@ function ingresarProducto() {
                 obj.nombreProducto = formProps1.nombre
                 obj.tipoProducto = formProps1.tipo
                 obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
+                obj.imagen =  File(formProps1.imagen)
                 obj.stock = +1
 
                 agregarProducto(obj)
@@ -267,6 +279,8 @@ function ingresarProducto() {
             obj.nombreProducto = formProps1.nombre
             obj.tipoProducto = formProps1.tipo
             obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
+            obj.imagen =  File(formProps1.imagen)
+
             obj.stock = +1
 
             agregarProducto(obj)
@@ -319,7 +333,9 @@ function generarLista() {
     for (const producto of arrayProductos) {
 
         let lista = document.createElement("li")
-        lista.innerHTML = `<p class="parrafoID"> id: ${producto.codigoProducto} </p>
+        lista.innerHTML = 
+        `<p class="parrafoID" ><img class="tamañoImagen" src="${producto.imagen}"></p>
+        <p > id: ${producto.codigoProducto} </p>
                 <p> Nombre: ${producto.nombreProducto} </p>
                 <p> Tipo: ${producto.tipoProducto}</p>
                 <p> Precio: ${producto.precioVenta} </p>
@@ -339,12 +355,16 @@ function listaParaVentas() {
     let documento = document.getElementById("listaVentas")
     documento.innerHTML = " "
     let idElemento
+    let parrafoID = 1
+
     for (const producto of arrayProductos) {
         let elemento = document.createElement("li")
 
         idElemento = producto.codigoProducto
-        elemento.innerHTML += `<div id="${producto.codigoProducto}" class="parrafoID">
+        elemento.innerHTML +=
         
+        `<div id="${producto.codigoProducto}" class="parrafoID${parrafoID}">
+        <p><img class="tamañoImagen" src="${producto.imagen}"></p>
         <p>  id:${producto.codigoProducto}</p>
         <p> Nombre: ${producto.nombreProducto} </p>
         <p> Tipo: ${producto.tipoProducto}</p>
@@ -353,11 +373,12 @@ function listaParaVentas() {
         <form>
         <label type="text" name="nombre">${producto.tipoProducto} ${producto.nombreProducto} </label>
         <button class="btn btn-primary" id="${idElemento}">Agregar a la compra</button>
+        <span id="advertencia></spam>
         </form >
         <hr>
 
         </div>`
-
+        parrafoID++
         documento.appendChild(elemento)
 
         //CODIGO PARA AGREGAR AL CARRITO

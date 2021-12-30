@@ -25,7 +25,7 @@
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-                <button id="acordionPersona" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <button id="acordionProductos" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
               Lista de productos
             </button>
             </h2>
@@ -57,6 +57,9 @@
                             <input type="text" name="importado">
                             <label for="">Precio</label>
                             <input type="number" name="precioCompra">
+                            <label for="">Foto</label>
+                            <input id="traerImagenes" type="file" name="imagen">
+
 
                             <button class="formularioAgregar" style="margin-top: 40px;" type="submit">Enviar información</button>
 
@@ -83,7 +86,7 @@
                 <div id="venderProducto" class="accordion-body">
 
                 </div>
-                <div id="control"></div>
+
             </div>
         </div>
         <div class="accordion-item">
