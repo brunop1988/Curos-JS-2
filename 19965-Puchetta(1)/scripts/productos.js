@@ -15,7 +15,7 @@ class Producto {
 
 const arrayProductos = []
 const carrito = []
-
+const facturados = []
 
 
 
@@ -139,17 +139,20 @@ function venderProducto() {
 
     for (const producto of arrayProductos) {
             let idProducto = producto.codigoProducto
+            
 
         let mensaje = document.createElement("div")
         mensaje.innerHTML = `
                 <form id="${producto.codigoProducto}">
-                <p class="parrafoID"> id: ${producto.codigoProducto} </h5>
+                <p class="parrafoID"> id: ${producto.codigoProducto} </p>
                 <p> Nombre: ${producto.nombreProducto} </p>
                 <p> Tipo: ${producto.tipoProducto}</p>
                 <p> Precio: ${producto.precioCompra} </p>
                 <p> Precio venta facturado: ${parseInt(calculoImpuesto(producto.precioVenta,"S")+totalPrecioConImpuesto(producto.precioVenta,producto.importado))}</p>
                 <p> Precio venta sin facturar: ${producto.precioVenta}</p>
                 <p> Stock: ${producto.stock} </p>
+                <img src="" id="tableBanner"  />
+
                 <label> Hacer boleta?</label>
                 <input id="${idProducto}" type="text" name="boleta"> 
                 <button class="control" type="submit"> Confirmar </button>
@@ -157,16 +160,39 @@ function venderProducto() {
                 `
 
 
+            let dataImage = localStorage.getItem('imgData');
+            let bannerImg = $('#tableBanner');
+            bannerImg.src = "data:image/png;base64," + dataImage;
 
         formulario2.appendChild(mensaje)
 
         $(`#${idProducto}`).submit((e) => {
+
             e.preventDefault()
+
+            const formData = new FormData(e.target)
+            const formProps = Object.fromEntries(formData)
+         
             if (producto.stock > 0) {
                 producto.stock--;
-             }
-             venderProducto()
+                if (formProps.boleta=="s" || formProps.boleta=="S"){
+                facturados.push(producto)
+                $(`#${idProducto}`).html("Operacion realizada")
+                avisarFacturacion(idProducto)
+                
+             }else if
+             (formProps.boleta=="n" || formProps.boleta=="N"){
+                $(`#${idProducto}`).html("Operacion realizada")
+                avisarFacturacion(idProducto)
+             } 
 
+            }else {
+                $(`#${idProducto}`).html("SIN STOCK")
+                avisarFacturacion(idProducto)
+
+            }
+             venderProducto()
+             generarLista()
          })
 
     }
@@ -183,7 +209,7 @@ function factura() {
         const formProps1 = Object.fromEntries(formData1)
     
         let objVentas
-        for (const producto of arrayProductos) {
+        for (const producto of facturados) {
             if (formProps1.boleta) {
                 objVentas = {
                     "Nombre: ": producto.nombreProducto,
@@ -220,10 +246,11 @@ function ingresarProducto() {
             //RECORRO Y COMPARO CADA OBJETO producto CONTRA DOS input CON ATRIBUTO name 
 
         let encontrado = arrayProductos.find(item => item.nombreProducto === nombre)
+
         let encontrado2 = arrayProductos.find(item => item.tipoProducto === tipo)
         let yaExistía = 0
             //EN TODOS LOS CASOS SE EVITARÁ AGREGAR UN PRODUCTO SIN NOMBRE NI TIPO
-        if ((encontrado != undefined || encontrado2 != undefined)) {
+        if ((encontrado != undefined && encontrado2 != undefined)) {
             if (encontrado.nombreProducto != `` || encontrado2.tipoProducto != ``) {
                 for (let i = 0; i < arrayProductos.length; i++) {
                     if (encontrado2.tipoProducto == arrayProductos[i].tipoProducto && encontrado.nombreProducto == arrayProductos[i].nombreProducto) {
@@ -254,9 +281,12 @@ function ingresarProducto() {
                 obj.nombreProducto = formProps1.nombre
                 obj.tipoProducto = formProps1.tipo
                 obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
-                obj.imagen =  File(formProps1.imagen)
-                obj.stock = +1
 
+                obj.stock = +1
+                let bannerImage = $(`#bannerImg`)
+                console.log(bannerImage)
+                let imgData = getBase64Image(bannerImage)
+                localStorage.setItem("imgData", imgData)
                 agregarProducto(obj)
 
                 confirmarAgregado(obj.nombreProducto, obj.tipoProducto)
@@ -279,9 +309,11 @@ function ingresarProducto() {
             obj.nombreProducto = formProps1.nombre
             obj.tipoProducto = formProps1.tipo
             obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
-            obj.imagen =  File(formProps1.imagen)
-
             obj.stock = +1
+
+            let bannerImage = $(`#bannerImg`).val();
+            let imgData = getBase64Image(bannerImage);
+            localStorage.setItem("imgData", imgData);
 
             agregarProducto(obj)
 
@@ -294,12 +326,33 @@ function ingresarProducto() {
 
     })
 }
+function getBase64Image(img) {
+    let canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    console.log(canvas.width)
+
+    canvas.height = img.height;
+    console.log(canvas.height)
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    let dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+
+
+
 
 //BUSQUEDA DE PRODUCTOS POR MARCA
 
 $(`#buscarProducto`).submit((e) => {
     e.preventDefault()
+    //LIMPIA EL RESULTADO DE BÚSQUEDA ANTERIOR 
     $(`#encontrados`).html(``)
+
     const formData = new FormData(e.target)
     const formProps = Object.fromEntries(formData)
     let resultado = arrayProductos.find(item => item.nombreProducto == formProps.nombre)
@@ -339,7 +392,13 @@ function generarLista() {
                 <p> Nombre: ${producto.nombreProducto} </p>
                 <p> Tipo: ${producto.tipoProducto}</p>
                 <p> Precio: ${producto.precioVenta} </p>
-                <p> Stock: ${producto.stock} </p>`
+                <p> Stock: ${producto.stock} </p>
+                <img src="" id="tableBanner" />
+                `
+
+            let dataImage = localStorage.getItem('imgData');
+            bannerImg = $('#tableBanner');
+            bannerImg.src = "data:image/png;base64," + dataImage;
         result.appendChild(lista)
             //ANTE LA POSIBILIDAD DE QUE SE AGREGUE UN PRODUCTO SIN CONTENIDO
         if (producto.nombreProducto === '' || producto.tipoProducto === '') {
@@ -478,12 +537,17 @@ function mostrarAvisoOk() {
         .fadeOut(2000)
         .fadeIn(2000)
         .slideUp(1000)
-
-
-
 }
 
+function avisarFacturacion(idProducto){
+    $(`${idProducto}`).css({"color": "green",
+    "font-size": "20px",
+})
+.fadeOut(2000)
+.fadeIn(2000)
+.slideUp(1000)
 
+}
 
 function compararCarritoContraStock() {
 
