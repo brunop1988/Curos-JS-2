@@ -11,16 +11,17 @@ class Producto {
         this.stock = stock + 1
     }
 }
+
+//CLASE USADA PARA PASAR LOS DATOS DE UN NUEVO OBJETO PARA FACTURARLO CON EL PRECIO CORRECTO
+class Factura {
+
+}
 //MÉTODOS CLASE PRODUCTO
 
 const arrayProductos = []
 const carrito = []
 const facturados = []
-
-
-
-
-
+const ventasSF = []
 
 
 function agregarProducto(producto) {
@@ -39,12 +40,34 @@ $(`#carrito`).click(() => {
             })
     })
 
+/*CARGA LOS ULTIMOS PRODUCTOS AGREGADOS A LA COMPRA, SEGUN EL USUARIO
+*NECESARIO SI NO SE VACÍA EL LOCALSTORAGE
+*EN EL PRESENTE CÓDIGO SE VACÍA EL CARRITO DE CADA USUARIO CADA VEZ QUE INGRESA (VER ingreso.js)
 
 function cargarArrayCarrito() {
 if(localStorage.getItem(`Productos ${localStorage.getItem("Nombre")}`)!=null){
     carrito.push(localStorage.getItem(`Productos ${localStorage.getItem("Nombre")}`))
 }
 }
+*/
+
+
+function mostrarTotal(){
+    $(`#mostrarTotal`).html(``)
+    
+        $(`#mostrarTotal`).click (()=>{
+            $(`#mostrarTotal`).trigger(`append`)
+        })
+        $(`#mostrarTotal`).append(`<p> 
+                                <span> A pagar: ${localStorage.getItem(`Total compras ${localStorage.getItem("Nombre")}`)}</span>
+                                <a data-toggle="tooltip" title="Ir al formulario de tarjeta" href="#pagoTarjeta"><img class="imagenCC" src="../img/card1.png"></a>
+                                <a data-toggle="tooltip" title="Ir al formulario de tarjeta" href="#pagoTarjeta"><img class="imagenCC" src="../img/card2.png"></a>
+                                </p>`)
+        mostrarAvisoTotal()
+    }
+
+   
+
 
 function segunUsuario() {
     if (localStorage.getItem("TipoUsuario") === "Comun") {
@@ -57,6 +80,20 @@ function segunUsuario() {
         }
 
     }
+}
+
+function mostrarPrecioFacturado(producto){
+   let calculo = parseInt(calculoImpuesto(producto.precioVenta,"S")+totalPrecioConImpuesto(producto.precioVenta,producto.importado))
+    return calculo
+}
+
+function hacerFactura(producto){
+     //CREACION DE OBJETO FACTURA PARA PASARLO A UN ARRAY CON EL PRECIO CORRECTO
+     let factura =  new Factura()
+     factura.nombre=producto.nombreProducto
+     factura.tipo = producto.tipoProducto
+     factura.precio = mostrarPrecioFacturado(producto)
+     facturados.push(factura)
 }
 
 function gananciaEmpresa(monto) {
@@ -99,11 +136,10 @@ function toString(producto) {
             <li class="listaCarrito"><strong>Nombre producto:</strong> ${producto.nombreProducto}</li>
             
             <li class="listaCarrito"><strong>Tipo producto:</strong> ${producto.tipoProducto}</li>
-            <li class="listaCarrito"><strong>Precio:</strong> ${producto.precioVenta}</li>
+            <li class="listaCarrito" ><strong>Precio:</strong> ${producto.precioVenta}</li>
             ----------------------------------------------------
             `
                       
-            
 }
 
 
@@ -119,6 +155,9 @@ function error() {
 agregarProducto(new Producto(1001, "../img/pendrive.jpg","Kingston", "Memoria flash 8gb", "S", 120, totalPrecioConImpuesto(120, "S"), 1))
 agregarProducto(new Producto(1002, "../img/camara.jpg","Genius", "Camara web", "S", 140, totalPrecioConImpuesto(140, "S"), 1))
 agregarProducto(new Producto(1003, "../img/notebook.jpg", "Lenovo", "Laptop refubrished core i5, 8gb de ram", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
+agregarProducto(new Producto(1004, "../img/celular.jpg","Xiaomi 9A", "Teléfono celular", "S", 250, totalPrecioConImpuesto(120, "S"), 1))
+agregarProducto(new Producto(1005, "../img/impresora.jpg","HP Desk Ink Advantage 2375", "Impresora", "S", 300, totalPrecioConImpuesto(140, "S"), 1))
+agregarProducto(new Producto(1006, "../img/microi9.jpg", "Intel", "Microprocesador i9", "N", 240, totalPrecioConImpuesto(240, "S"), 1))
 
 //COMIENZA LA PARTE INTERACTIVA CON EL USUARIO
 
@@ -143,26 +182,25 @@ function venderProducto() {
 
         let mensaje = document.createElement("div")
         mensaje.innerHTML = `
-                <form id="${producto.codigoProducto}">
+                <form class="formularioVentas" id="${producto.codigoProducto}">
                 <p class="parrafoID"> id: ${producto.codigoProducto} </p>
                 <p> Nombre: ${producto.nombreProducto} </p>
                 <p> Tipo: ${producto.tipoProducto}</p>
                 <p> Precio: ${producto.precioCompra} </p>
-                <p> Precio venta facturado: ${parseInt(calculoImpuesto(producto.precioVenta,"S")+totalPrecioConImpuesto(producto.precioVenta,producto.importado))}</p>
-                <p> Precio venta sin facturar: ${producto.precioVenta}</p>
-                <p> Stock: ${producto.stock} </p>
-                <img src="" id="tableBanner"  />
-
+                <p> Precio venta facturado: ${mostrarPrecioFacturado(producto)}</p>
+                <p> Precio venta sin facturar: ${parseInt(producto.precioVenta)}</p>
+                <p name="stock"> Stock: ${producto.stock} </p>
+                
                 <label> Hacer boleta?</label>
                 <input id="${idProducto}" type="text" name="boleta"> 
                 <button class="control" type="submit"> Confirmar </button>
                 </form>
+                
+                
                 `
 
 
-            let dataImage = localStorage.getItem('imgData');
-            let bannerImg = $('#tableBanner');
-            bannerImg.src = "data:image/png;base64," + dataImage;
+            
 
         formulario2.appendChild(mensaje)
 
@@ -176,21 +214,45 @@ function venderProducto() {
             if (producto.stock > 0) {
                 producto.stock--;
                 if (formProps.boleta=="s" || formProps.boleta=="S"){
-                facturados.push(producto)
-                $(`#${idProducto}`).html("Operacion realizada")
-                avisarFacturacion(idProducto)
-                
-             }else if
+                        
+                            hacerFactura(producto)
+                        
+                 $(`#mostrarOk`).html("Producto enviado a facturas")
+                               .css({
+                                        "color": "green",
+                                        "font-size": "20px",
+})
+                                .show()
+                                .fadeOut(5000)
+                    }else if
              (formProps.boleta=="n" || formProps.boleta=="N"){
-                $(`#${idProducto}`).html("Operacion realizada")
-                avisarFacturacion(idProducto)
+
+                 //ARRAY DE VENTAS NO FACTURADAS
+                    ventasSF.push(producto)
+                $(`#mostrarOk`).html("Operacion realizada")
+                               .css({
+                                        "color": "green",
+                                        "font-size": "20px",
+                })
+                               .show()
+                               .fadeOut(5000)
+                                    
              } 
 
             }else {
-                $(`#${idProducto}`).html("SIN STOCK")
-                avisarFacturacion(idProducto)
-
-            }
+                $(`#mostrarOk`).html("SIN STOCK")
+                               .css({
+                                        "color": "red",
+                                        "font-size": "20px",
+                })
+                                .show()
+                                .fadeOut(1000)
+                                .fadeIn(1000)
+                                .fadeOut(1000)
+                                .fadeIn(1000)
+                                .fadeOut(3000)
+                        
+                }
              venderProducto()
              generarLista()
          })
@@ -199,36 +261,6 @@ function venderProducto() {
 }
 
 
-//FUNCION PARA MOSTRAR PRODUCTOS FACTURADOS
-function factura() {
-    const arrayVentas = []
-    const formulario = document.getElementsByClassName("control")
-    formulario.addEventListener('submit', e => {
-        e.preventDefault()
-        const formData1 = new FormData(e.target)
-        const formProps1 = Object.fromEntries(formData1)
-    
-        let objVentas
-        for (const producto of facturados) {
-            if (formProps1.boleta) {
-                objVentas = {
-                    "Nombre: ": producto.nombreProducto,
-                    "Codigo. ": producto.codigoProducto,
-                    "Facturado: ": formProps1.boleta,
-                    "Precio final: ": producto.precioFinal
-                }
-                arrayVentas.push(objVentas)
-
-            }
-        }
-        let form = document.getElementById("avisoFactura")
-        let mensaje = document.createElement("li")
-        mensaje.innerHTML = `<p> ${objVentas["Nombre: "]}</p
-                            <p> ${objVentas["Facturado: "]}</p`
-
-        form.appendChild(mensaje)
-    })
-}
 
 //INGRESA A LA LISTA DE PRODUCTOS DE LOS ADMINISTRADORES
 function ingresarProducto() {
@@ -283,15 +315,14 @@ function ingresarProducto() {
                 obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
 
                 obj.stock = +1
-                let bannerImage = $(`#bannerImg`)
-                console.log(bannerImage)
-                let imgData = getBase64Image(bannerImage)
-                localStorage.setItem("imgData", imgData)
+                obj.imagen = localStorage.getItem('img')
                 agregarProducto(obj)
 
                 confirmarAgregado(obj.nombreProducto, obj.tipoProducto)
 
                 document.getElementById("limpiarFormulario").reset()
+                $('#onload').val(0)
+                yaExistía=1
 
             }
 
@@ -310,37 +341,57 @@ function ingresarProducto() {
             obj.tipoProducto = formProps1.tipo
             obj.precioVenta = totalPrecioConImpuesto(Number(formProps1.precioCompra), formProps1.importado)
             obj.stock = +1
+            obj.imagen = localStorage.getItem('img')
 
-            let bannerImage = $(`#bannerImg`).val();
-            let imgData = getBase64Image(bannerImage);
-            localStorage.setItem("imgData", imgData);
+            
 
             agregarProducto(obj)
 
             confirmarAgregado(obj.nombreProducto, obj.tipoProducto)
 
             document.getElementById("limpiarFormulario").reset()
+            $('#onload').val(0)
+
         }
 
 
 
     })
 }
-function getBase64Image(img) {
-    let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    console.log(canvas.width)
 
-    canvas.height = img.height;
-    console.log(canvas.height)
+const CLOUDINARY_URL= 'https://api.cloudinary.com/v1_1/dwf7z8i1s/image/upload'
+const CLOUDINARY_PRESET = 'jlobzt7r'
 
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+    $(`#bannerImg`).on('change', async(e)=>{
+      const image = e.target.files[0]
+        const formData = new FormData()
+        formData.append('file', image)
+        formData.append('upload_preset', CLOUDINARY_PRESET)
 
-    let dataURL = canvas.toDataURL("image/png");
 
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-}
+    const res = await axios.post(CLOUDINARY_URL, formData, {
+        headers:{
+            'content-type': 'multipart/form-data'
+        },
+        onUploadProgress(e){
+            
+            $('#onload').val(Math.round((e.loaded * 100) / e.total))
+        }
+    });
+        console.log(res.status)
+        
+        if(res.status == 200){
+           
+          localStorage.setItem('img',res.data.secure_url)  
+        }else{
+            alert('error al cargar imagen')
+        }
+        
+    })
+    
+
+      
+
 
 
 
@@ -391,14 +442,12 @@ function generarLista() {
         <p > id: ${producto.codigoProducto} </p>
                 <p> Nombre: ${producto.nombreProducto} </p>
                 <p> Tipo: ${producto.tipoProducto}</p>
-                <p> Precio: ${producto.precioVenta} </p>
+                <p> Precio: ${parseInt(producto.precioVenta)} </p>
                 <p> Stock: ${producto.stock} </p>
-                <img src="" id="tableBanner" />
+        
                 `
 
-            let dataImage = localStorage.getItem('imgData');
-            bannerImg = $('#tableBanner');
-            bannerImg.src = "data:image/png;base64," + dataImage;
+         
         result.appendChild(lista)
             //ANTE LA POSIBILIDAD DE QUE SE AGREGUE UN PRODUCTO SIN CONTENIDO
         if (producto.nombreProducto === '' || producto.tipoProducto === '') {
@@ -407,7 +456,7 @@ function generarLista() {
     }
 }
 
-
+let localStore = 0
 //LISTA DE PRODUCTOS DISPONIBLES PARA LOS CLIENTES. ES LO QUE SE DESPLIEGA EN VENTAS.HTML
 function listaParaVentas() {
 
@@ -423,13 +472,13 @@ function listaParaVentas() {
         elemento.innerHTML +=
         
         `<div id="${producto.codigoProducto}" class="parrafoID${parrafoID}">
-        <p><img class="tamañoImagen" src="${producto.imagen}"></p>
-        <p>  id:${producto.codigoProducto}</p>
+        <p class="fondoImagen"><img class="tamañoImagen" src="${producto.imagen}"></p>
+        <p> Código:${producto.codigoProducto}</p>
         <p> Nombre: ${producto.nombreProducto} </p>
         <p> Tipo: ${producto.tipoProducto}</p>
         <p> Precio: ${producto.precioVenta} </p>
         <p> Stock: ${producto.stock} </p>
-        <form>
+        <form class="formularioVentas">
         <label type="text" name="nombre">${producto.tipoProducto} ${producto.nombreProducto} </label>
         <button class="btn btn-primary" id="${idElemento}">Agregar a la compra</button>
         <span id="advertencia></spam>
@@ -439,14 +488,25 @@ function listaParaVentas() {
         </div>`
         parrafoID++
         documento.appendChild(elemento)
+        
 
         //CODIGO PARA AGREGAR AL CARRITO
         $(`#${idElemento}`).click(function(e) {
             e.preventDefault()
             if (producto.stock > 0) {
                 producto.stock--;
-                carrito.push(toString(producto))
-                
+                carrito.push(toString(producto)) 
+                let suma=0
+                suma+= producto.precioVenta
+                let suma2 =0 
+                //SUMA EL VALOR DE LA COMPRA TOTAL Y LO MUESTRA EN CASO DE SOLICITARLO
+                if (localStorage.getItem(`Total compras ${localStorage.getItem("Nombre")}`)!=undefined){
+                localStore = parseInt(localStorage.getItem(`Total compras ${localStorage.getItem("Nombre")}`))
+                }
+                suma2 = localStore + suma
+               
+                localStorage.setItem(`Total compras ${localStorage.getItem("Nombre")}`, suma2)
+            
                 localStorage.setItem(`Productos ${localStorage.getItem("Nombre")}`, carrito)
             } else {
                 avisarStock(idElemento)
@@ -539,15 +599,18 @@ function mostrarAvisoOk() {
         .slideUp(1000)
 }
 
-function avisarFacturacion(idProducto){
-    $(`${idProducto}`).css({"color": "green",
-    "font-size": "20px",
+function mostrarAvisoTotal(){
+
+
+$(`#mostrarTotal`).css({
+    "color": "black",
+    "font-size": "17px",
 })
-.fadeOut(2000)
-.fadeIn(2000)
-.slideUp(1000)
+.show()
+.fadeOut(5000)
 
 }
+
 
 function compararCarritoContraStock() {
 

@@ -20,8 +20,11 @@
         </div>
         <div id="linkAdminPersonal">
             <a href="personal.html">Adminstración de personal</a>
-        </div>
+
     </header>
+    <div id="mostrarOk">
+
+    </div>
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -59,7 +62,7 @@
                             <input type="number" name="precioCompra">
                             <label for="">Foto</label>
                             <input id="bannerImg" type='file'>
-
+                            <progress id="onload" value="0" max="100" style="width: 100%;"></progress>
 
                             <button class="formularioAgregar" style="margin-top: 40px;" type="submit">Enviar información</button>
 
@@ -85,10 +88,14 @@
             <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                 <div id="venderProducto" class="accordion-body">
 
+
                 </div>
 
             </div>
+
+
         </div>
+
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingFive">
                 <button id="acordionBuscar" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
@@ -107,10 +114,14 @@
             </div>
 
         </div>
+
     </div>
 
+    <div>
+        <a data-toggle="tooltip" title="Salir del sistema" href="index.html"><img id="imgLogOut" src="../img/logoutVentas.ico" alt=""></a>
+    </div>
     <script src="../libs/jquery-3.6.0.min.js"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="../scripts/productos.js"></script>
     <script src="../js/bootstrap.js"></script>
 

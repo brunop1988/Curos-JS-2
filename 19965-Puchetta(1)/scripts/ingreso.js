@@ -9,9 +9,19 @@ const usuarios = [{
         Nombre: "Usuario-2",
         Contraseña: "234"
     },
+    {
+
+        Tipo: "Comun",
+        Nombre: "Usuario-3",
+        Contraseña: "345"
+    }
 
 
 ]
+
+
+
+
 
 function sesionActual(usuario) {
     localStorage.setItem("Nombre", usuario.Nombre)
@@ -23,6 +33,10 @@ function sesionActual(usuario) {
     documento.appendChild(mensaje)
 }
 
+//RESETEO DEL CARRITO DEL USUARIO QUE ACABA DE INGRESAR
+localStorage.removeItem(`Productos ${localStorage.getItem("Nombre")}`)
+localStorage.removeItem(`Total compras ${localStorage.getItem("Nombre")}`)
+
 function registrarse() {
     const formData2 = new FormData(e.target)
     const formProps2 = Object.fromEntries(formData2)
@@ -30,6 +44,8 @@ function registrarse() {
         if ((formProps2.nombreUsuario != usuario.Nombre) && (formProps2.contraseña != usuario.Contraseña) && (formProps2.tipo === "claveAdmin")) {
             usuarios.push(nombreUsuario, contraseña, "Admin")
         }
+
+
 
 
     }

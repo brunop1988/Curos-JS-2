@@ -32,3 +32,9 @@ body {
     margin-left: 1000px;
     color: white;
 }
+
+#imgLogOut {
+    height: 40px;
+    width: 40px;
+    margin-left: 510px;
+}

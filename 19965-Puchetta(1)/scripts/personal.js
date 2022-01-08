@@ -166,14 +166,15 @@ usuarioActual.appendChild(parrafoUsuario)
 //Ingreso al sistema de una persona
 
 
-let persona = new Persona()
 const formulario = document.getElementById('ingresarPersona')
 formulario.addEventListener('submit', e => {
-    //Limpia el contenedor con el mensaje de confirmación, para volverlo a cargar
-    $(`#confirmacion`).html(` `)
+
     e.preventDefault()
+
     const formData = new FormData(e.target)
     const formProps = Object.fromEntries(formData)
+    let persona = new Persona()
+
     persona.nombre = formProps.nombre
     persona.apellido = formProps.apellido
     persona.documento = Number(formProps.documento)
@@ -191,7 +192,7 @@ formulario.addEventListener('submit', e => {
 
 
 
-    document.getElementById('ingresarPersona').reset()
+    document.getElementById('limpiarFormulario').reset()
 
 
 })

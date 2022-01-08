@@ -14,6 +14,10 @@
     font-size: 15px;
 }
 
+#espacioUsuario {
+    color: rgb(5, 5, 4);
+}
+
 .tamañoImagen {
     height: 200px;
     width: 200px;
@@ -26,27 +30,72 @@
 }
 
 .parrafoID1 {
-    margin-top: 150px;
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 120px;
     margin-right: 200px;
-    width: fit-content;
+    margin-left: -20px;
+    width: min-content;
+    height: 60%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
 }
 
 .parrafoID2 {
-    margin-top: 150px;
-    margin-left: 130px;
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 120px;
+    margin-left: 110px;
+    width: min-content;
+    height: 60%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
 }
 
 .parrafoID3 {
-    margin-top: 150px;
-    margin-left: 200px;
-    width: fit-content;
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 120px;
+    margin-left: 240px;
+    width: min-content;
+    height: 65%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
+}
+
+.parrafoID4 {
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 50px;
+    margin-right: 200px;
+    margin-left: -20px;
+    width: min-content;
+    height: 60%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
+}
+
+.parrafoID5 {
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 50px;
+    margin-left: 110px;
+    width: min-content;
+    height: 66%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
+}
+
+.parrafoID6 {
+    border: solid 2px black;
+    padding: 20px;
+    margin-top: 50px;
+    margin-left: 240px;
+    width: min-content;
+    height: 60.3%;
+    background: radial-gradient(circle, rgb(229, 229, 231) 0%, rgb(161, 176, 190) 100%);
 }
 
 #listaVentas {
     display: grid;
     grid-template-columns: 300px 300px 500px;
-    grid-template-rows: 200px;
-    grid-template-areas: "parrafoID1" "parrafoID2" "parrafoID3";
+    grid-template-rows: 800px 800px;
+    grid-template-areas: "parrafoID1 parrafoID2 parrafoID3" "parrafoID4 parrafoID5 parrafoID6";
     margin-left: 150px;
 }
 
@@ -55,4 +104,46 @@
     width: 120px;
     margin-left: 20px;
     margin-bottom: 20px;
+}
+
+#mostrarTotal {
+    width: max-content;
+    margin-left: 1150px;
+    margin-top: -80px;
+}
+
+.imagenCC {
+    width: 50px;
+    height: 30px;
+}
+
+#fondoImagen {
+    background: none;
+}
+
+.btn-group {
+    margin-top: -260px;
+    margin-left: 200px;
+}
+
+.formatoTextoProducto {
+    background-color: white !important;
+}
+
+#logOutVentas {
+    width: 50px;
+    height: 50px;
+    margin-left: 250px;
+    margin-top: -50px;
+}
+
+#tituloVentas {
+    text-align: center;
+    font-family: "GOW";
+    font-size: 70px;
+}
+
+@font-face {
+    font-family: "GOW";
+    src: url("GODOFWAR.ttf")
 }

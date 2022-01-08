@@ -22,6 +22,7 @@
         <div id="linkAdminProductos">
             <a href="productos.html">Administración de productos</a>
         </div>
+
     </header>
 
     <div class="accordion" id="accordionExample">
@@ -67,7 +68,7 @@
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <div id="ingresarPersona">
-                        <form action="">
+                        <form id="limpiarFormulario" action="">
                             <label for="">Nombre</label>
                             <input type="text" name="nombre">
                             <label for="">Apellido</label>
@@ -109,6 +110,10 @@
             </div>
 
         </div>
+        <div>
+            <span><a data-toggle="tooltip" title="Salir del sistema" href="index.html"><img id="imgLogOut" src="../img/logoutNegro.png" alt=""></a></span>
+        </div>
+
         <script src=../libs/jquery-3.6.0.min.js></script>
         <script src="../scripts/personal.js"></script>
         <script src="../js/bootstrap.js "></script>

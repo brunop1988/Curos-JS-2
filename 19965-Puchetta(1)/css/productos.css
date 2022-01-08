@@ -41,3 +41,14 @@ label {
     list-style-type: none;
     text-align: center;
 }
+
+#imgLogOut {
+    height: 50px;
+    width: 50px;
+    margin-left: 910px;
+    margin-top: -40px;
+}
+
+#mostrarOk {
+    position: fixed;
+}

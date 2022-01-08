@@ -2,18 +2,13 @@
 
 #div1 {
     background-color: black;
-    margin-top: 150px;
+    margin-top: 110px;
 }
 
 #div2 {
     background-color: black;
-    margin-top: 150px;
+    margin-top: 110px;
     height: min-content;
-}
-
-h1 {
-    text-align: center;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 #img1 {
@@ -32,4 +27,22 @@ h1 {
     display: inline-block;
     top: 35%;
     left: 67%;
+}
+
+#imgLogOut {
+    height: 70px;
+    width: 70px;
+    margin-left: 20px;
+    margin-top: -50px;
+}
+
+#tituloRutas {
+    font-family: "GOW";
+    font-size: 50px;
+    text-align: center;
+}
+
+@font-face {
+    font-family: "GOW";
+    src: url("GODOFWAR.ttf")
 }
