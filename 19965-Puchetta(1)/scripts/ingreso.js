@@ -54,7 +54,7 @@ function registrarse() {
 
 let link
 
-//SEGUN EL TIPO DE USUARIO LOGEADO, ESTA PAGINA NOS DIRIGE A rutas.html o ventas.html
+//SEGUN EL TIPO DE USUARIO LOGUEADO, ESTA PAGINA NOS DIRIGE A rutas.html o ventas.html
 for (const usuario of usuarios) {
 
     const formulario = document.getElementById("formIngreso")

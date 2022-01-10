@@ -403,23 +403,29 @@ $(`#buscarProducto`).submit((e) => {
     e.preventDefault()
     //LIMPIA EL RESULTADO DE BÚSQUEDA ANTERIOR 
     $(`#encontrados`).html(``)
-
+    let contador = 0
     const formData = new FormData(e.target)
     const formProps = Object.fromEntries(formData)
-    let resultado = arrayProductos.find(item => item.nombreProducto == formProps.nombre)
-    if (resultado) {
-        $(`#encontrados`).append(`<p> Marca: ${resultado.nombreProducto} </p>
-                                                <p> Tipo: ${resultado.tipoProducto} </p>
-                                                <p> Codigo: ${resultado.codigoProducto} </p>
-                                                <p> Precio Compra: ${resultado.precioCompra} </p>
-                                                <p> Precio Venta: ${resultado.precioVenta} </p>`)
+    for(let i=0;i<arrayProductos.length;i++){
+    
+
+    if (formProps.nombre==arrayProductos[i].nombreProducto) {
+        $(`#encontrados`).append(`<p> Marca: ${arrayProductos[i].nombreProducto} </p>
+                                                <p> Tipo: ${arrayProductos[i].tipoProducto} </p>
+                                                <p> Codigo: ${arrayProductos[i].codigoProducto} </p>
+                                                <p> Precio Compra: ${arrayProductos[i].precioCompra} </p>
+                                                <p> Precio Venta: ${arrayProductos[i].precioVenta} </p>
+                                                --------------------------------------------------`)
+                            
+                                                contador++
 
 
-
-    } else {
+    } 
+}
+    if(contador===0) {
         $(`#encontrados`).append(`<span> No se encontraron resultados </span>`)
     }
-
+    
 })
 
 
